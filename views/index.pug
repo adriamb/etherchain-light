@@ -16,7 +16,7 @@ block content
           td
             a(href="/block/" + block.number) #{block.number}
           td 
-            a(href="/account/" + block.author) #{nameformatter.format(block.author)}
+            a(href="/account/" + block.miner) #{nameformatter.format(block.miner)}
           td #{moment.unix(block.timestamp).format()}
           td #{block.transactions.length}
           td #{block.uncles.length}
@@ -27,6 +27,7 @@ block content
     table.table
       thead
         tr
+          th Block
           th Hash
           th From
           th To
@@ -34,6 +35,8 @@ block content
       tbody
         for tx in txs
           tr
+            td
+              a(href="/block/" + tx.block) #{tx.block}
             td
               a(href="/tx/" + tx.hash) #{tx.hash.substr(0,10)}...
             td

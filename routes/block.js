@@ -4,6 +4,8 @@ var router = express.Router();
 var async = require('async');
 var Web3 = require('web3');
 
+var cliqueSigner = require('../utils/cliqueSigner');
+
 router.get('/:block', function(req, res, next) {
   
   var config = req.app.get('config');  
@@ -13,15 +15,16 @@ router.get('/:block', function(req, res, next) {
   async.waterfall([
     function(callback) {
       web3.eth.getBlock(req.params.block, true, function(err, result) {
-        callback(err, result);
+        result.miner=cliqueSigner(result)
+        callback(err, result);    
       });
     }, function(result, callback) {
       if (!result) {
         return next({name : "BlockNotFoundError", message : "Block not found!"});
       }
-      web3.trace.block(result.number, function(err, traces) {
-        callback(err, result, traces);
-      });
+      //web3.trace.block(result.number, function(err, traces) {
+        callback(null /*err*/ , result, null /* traces*/);
+      //});
     }
   ], function(err, block, traces) {
     if (err) {

@@ -42,7 +42,17 @@ router.post('/verify', function(req, res, next) {
     return;
   }
   
+
   async.waterfall([
+
+    function(callback) {
+      web3.eth.getCode( contractAddress, function(err, creationBytecode )  {
+        console.log("bytecode",creationBytecode);
+        callback(null, creationBytecode);
+      });
+    },
+
+    /*
     function(callback) {
       web3.trace.filter({ "fromBlock": "0x00", "toAddress": [ contractAddress ] }, function(err, traces) {
         console.log("Received traces");
@@ -63,11 +73,12 @@ router.post('/verify', function(req, res, next) {
       } else {
         callback(null, creationBytecode);
       }
-    }, function(creationBytecode, callback) {
+    }, */ function(creationBytecode, callback) {
       
       var tmpName = tmp.tmpNameSync();
       var outputName = tmp.tmpNameSync();
-      var solcCommand = "/usr/bin/nodejs ./utils/compile.js " + tmpName + " " + outputName;
+      var nodepath = "node"
+      var solcCommand = nodepath+" ./utils/compile.js " + tmpName + " " + outputName;
       
       var data = { source: contractSource, optimize: optimize, compilerVersion: compilerVersion };
       console.log(solcCommand);
@@ -100,7 +111,7 @@ router.post('/verify', function(req, res, next) {
         var abi = "";
         for (var contract in data.contracts) {
           if (contract === ":" + contractName || contract === contractName) {
-            contractBytecode = "0x" + data.contracts[contract].bytecode;
+            contractBytecode = "0x" + data.contracts[contract].runtimeBytecode;
             abi = data.contracts[contract].interface;
           }
         }

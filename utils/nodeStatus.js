@@ -14,12 +14,13 @@ var nodeStatus = function(config) {
     
     async.waterfall([
       function(callback) {
-        web3.version.getNode(function(err, result) {
-          self.version = result;
-          callback(err);
-        });
+//        web3.version.getNode(function(err, result) {
+          self.version = "Internal";
+          callback(null);
+//          callback(err);
+//        });
       }, function(callback) {
-        web3.net.getPeerCount(function(err, result) {
+        web3.eth.net.getPeerCount(function(err, result) {
           self.nbrPeers = result;
           callback(err);
         });
