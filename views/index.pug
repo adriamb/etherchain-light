@@ -22,8 +22,9 @@ block content
           td #{block.uncles.length}
   h3 Recent Transactions
   if txs.length === 0
-    p No transactions during the last 10 blocks
+    p No transactions during the last 10 blocks (last sync block #{lastblock})
   else
+    p (last sync block #{lastblock})
     table.table
       thead
         tr

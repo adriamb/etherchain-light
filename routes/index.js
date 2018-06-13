@@ -28,13 +28,14 @@ router.get('/', async function(req, res, next) {
   }
 
   let txs = []
-
+  let lastblock = "none"
   try {
     const txdb = req.app.get('txdb');
+    lastblock = await txdb.get('lastblock')
     txs = JSON.parse(await txdb.get("lasttx"))
   } catch (err) { }
 
-  res.render('index', { blocks: blocks, txs: txs });
+  res.render('index', { blocks: blocks, txs: txs ,lastblock : lastblock});
 
 });
 
