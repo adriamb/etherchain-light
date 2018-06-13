@@ -148,7 +148,6 @@ router.get('/', async function(req, res, next) {
         }
         res.send(result)
     } catch (err) {
-        mutex.release();
         console.log(err)
         res.send( {
             error: err
