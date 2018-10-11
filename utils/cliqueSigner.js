@@ -3,6 +3,8 @@ var ethBlock = require('ethereumjs-block');
 
 function cliqueSigner (blockParams) {
 
+      try {
+
       const blockHeader = new ethBlock.Header({
         parentHash: blockParams.parentHash,
         uncleHash: blockParams.sha3Uncles,
@@ -26,6 +28,11 @@ function cliqueSigner (blockParams) {
       publicKey = ethUtil.ecrecover(msgHash,signature.v,signature.r,signature.s)
 
       return '0x'+ethUtil.pubToAddress(publicKey).toString('hex')
+      
+      } catch (e) {
+          
+          return '0xunknown'
+      }
 }
 
 module.exports = cliqueSigner;
