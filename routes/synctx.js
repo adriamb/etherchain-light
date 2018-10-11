@@ -71,7 +71,7 @@ syncNextBlock = async (txdb,web3) => {
     let lastDbBlock
 
     try {
-        lastDbBlock = await txdb.get('lastblock')
+        lastDbBlock = parseInt(await txdb.get('lastblock'))
     } catch (err) {
         console.log("Initializing...")
         await txdb.put('lastblock',0)
@@ -121,9 +121,9 @@ syncNextBlock = async (txdb,web3) => {
     }
 
     return {
-        error: null,
+        error   : null,
         current : lastBlockchainBlock,
-        last :lastDbBlock,
+        last    : lastDbBlock,
         txcount : txs.length
     }
 

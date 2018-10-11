@@ -1,3 +1,11 @@
-FROM node:8.7.0-onbuild
+FROM node:8.12.0-jessie
 
-EXPOSE 3000
+RUN apt-get install git gcc make
+RUN git clone https://github.com/adriamb/etherchain-light
+RUN cd /etherchain-light && npm i
+RUN mkdir -p /etherchain-light/data/txdb
+RUN mkdir -p /etherchain-light/data/etherchain
+
+WORKDIR /etherchain-light
+
+CMD ["/bin/sh","./run.sh"]
