@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs')
 
 var synctx = require('./routes/synctx');
 var index = require('./routes/index');
@@ -72,6 +73,17 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+process.on('uncaughtException', function(error) {
+try {
+  fs.appendFile('unhandled.log', error, function (err) {
+    if (err) throw err;
+    console.log('Saved!');
+  });
+} catch (e) {
+  console.log(e)
+}
 });
 
 
